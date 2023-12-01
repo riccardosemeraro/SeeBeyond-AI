@@ -46,3 +46,8 @@ history = model.fit(
     epochs=10,
     validation_data=validation_generator
 )
+
+# Salva il modello addestrato
+model.save('./model/SeeBeyond.h5')
+
+
