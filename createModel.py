@@ -3,7 +3,7 @@ from tensorflow.keras import layers, models
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 # Specifica il percorso del tuo set di dati
-train_data_dir = "/percorso/del/tuo/dataset"
+train_data_dir = "./dataset"
 img_height, img_width = 224, 224  # Dimensioni delle immagini di input
 
 # Utilizza l'Image Data Generator per la preparazione dei dati
