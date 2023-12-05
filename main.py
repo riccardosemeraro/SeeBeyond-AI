@@ -1,14 +1,8 @@
-#Dataset contiene le immagini degli oggetti da riconoscere, divisi per (train, val, test) e classe (car, cat)
-#training contiene tutti gli script per il training
-#model contiene il modello addestrato salvato in un file .h5
-
-
-#apparentemente questa parte di codice è completa, prende il modello e lo usa per il riconoscimento degli oggetti
-#bisogna implementare meglio la parte di creazione del modello
+#import librerie
 import cv2
 import numpy as np
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing.image import img_to_array, load_img
+from keras.models import load_model
+from keras.preprocessing.image import img_to_array
 import time
 
 # Classi 'Automobile' e 'Gatto'
@@ -18,13 +12,31 @@ classi = ['Automobile', 'Gatto']
 model = load_model('./model/SeeBeyond.h5') 
 
 # Dimensioni dell'immagine che il modello si aspetta
-img_size = (64, 64)
+img_size = (128, 128)
 
 # Funzione per elaborare l'immagine prima di effettuare la predizione
-def preprocess_image(image):
-    img = cv2.resize(image, img_size)
+#def preprocess_image(image):
+ #   img = cv2.resize(image, img_size)
+  #  img = img_to_array(img) / 255
+   # img = np.expand_dims(img, axis=0)
+    #return img
+
+def preprocess_image(frame):
+    # Converti l'immagine in scala di grigi
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+    # Ridimensiona l'immagine
+    img = cv2.resize(gray, img_size)
+
+    # Converte l'immagine in un array e normalizza i valori dei pixel a un range tra 0 e 1
     img = img_to_array(img) / 255.0
+
+    # Espandi le dimensioni dell'array per includere la dimensione del batch
     img = np.expand_dims(img, axis=0)
+
+    # Espandi le dimensioni dell'array per includere la dimensione del canale
+    img = np.expand_dims(img, axis=-1)
+
     return img
 
 # Avvia il flusso video dalla webcam
@@ -34,15 +46,16 @@ while True:
     # Leggi un frame dalla webcam
     ret, frame = cap.read()
 
-    # Effettua la predizione solo ogni tot frame (può essere regolato)
-    if time.time() % 5 == 0:
-        # Preprocessa l'immagine
-        processed_frame = preprocess_image(frame)
+    # Preprocessa l'immagine
+    processed_frame = preprocess_image(frame)
 
-        # Effettua la predizione
-        prediction = model.predict(processed_frame)
+    # Effettua la predizione
+    prediction = model.predict(processed_frame)
 
-        # Trova l'indice della classe con la probabilità massima
+    # Trova l'indice della classe con la probabilità massima
+    cv2.putText(frame, 'automobile: '+str(prediction[0][0]), (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    cv2.putText(frame, 'gatto: '+str(prediction[0][1]), (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    if np.max(prediction) > 0.65:
         predicted_class = np.argmax(prediction)
 
         # Ottieni l'etichetta della classe
@@ -50,6 +63,7 @@ while True:
 
         # Disegna il risultato sul frame
         cv2.putText(frame, label, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    print(np.argmax(prediction))
 
     # Visualizza il frame
     cv2.imshow('Webcam', frame)

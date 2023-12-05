@@ -120,8 +120,8 @@ def run():
         X, Y, Z, D = 0, 0, 0, 0
 
         #variabile per trasferimento del frame
-        frame_transfer = Frame_Transfer()
-        frame_transfer.conn_sub_server(("192.168.43.247",15000))
+        #frame_transfer = Frame_Transfer()
+        #frame_transfer.conn_sub_server(("192.168.43.247",15000))
 
         # loop
         while 1:
@@ -258,7 +258,7 @@ def run():
 # ------------------------------
 # Frame Transfer
 # ------------------------------
-class Frame_Transfer:
+'''class Frame_Transfer:
     
     s = None
 
@@ -271,18 +271,18 @@ class Frame_Transfer:
 
         x = pickle.dumps(x)
         self.s.sendall(x)
-        '''data = self.s.recv(4096) #risposta dal server
-        print(str(data,"utf-8"))'''
+        #data = self.s.recv(4096) #risposta dal server
+        #print(str(data,"utf-8"))
 
         y = pickle.dumps(y)
         self.s.sendall(y)
-        '''data = self.s.recv(4096) #risposta dal server
-        print(str(data,"utf-8"))'''
+        #data = self.s.recv(4096) #risposta dal server
+        #print(str(data,"utf-8"))
 
         D = pickle.dumps(D)
         self.s.sendall(D)
-        '''data = self.s.recv(4096) #risposta dal server
-        print(str(data,"utf-8"))'''
+        #data = self.s.recv(4096) #risposta dal server
+        #print(str(data,"utf-8"))
 
     def conn_sub_server(self, indirizzo_server):
         try:
@@ -292,6 +292,7 @@ class Frame_Transfer:
         except socket.error as errore:
             print(f"Qualcosa e' andato storto, system exit...\n{errore}")
             sys.exit()
+            '''
 
 
 
@@ -880,8 +881,8 @@ class Frame_Angles:
 
         # get 3D distance
         D = self.distance_from_origin(X, Y, Z)
-        D = D * 2.54
-        print(D);
+        D = D * 2.54 #conversione in cm
+        print(D)
 
         # done
         return X, Y, Z, D
