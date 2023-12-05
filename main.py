@@ -14,13 +14,7 @@ model = load_model('./model/SeeBeyond.h5')
 # Dimensioni dell'immagine che il modello si aspetta
 img_size = (128, 128)
 
-# Funzione per elaborare l'immagine prima di effettuare la predizione
-#def preprocess_image(image):
- #   img = cv2.resize(image, img_size)
-  #  img = img_to_array(img) / 255
-   # img = np.expand_dims(img, axis=0)
-    #return img
-
+# processa il frame acquisito a webcam
 def preprocess_image(frame):
     # Converti l'immagine in scala di grigi
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -46,24 +40,25 @@ while True:
     # Leggi un frame dalla webcam
     ret, frame = cap.read()
 
-    # Preprocessa l'immagine
-    processed_frame = preprocess_image(frame)
+    if time.time() % 5 > 0:
+        # Preprocessa l'immagine
+        processed_frame = preprocess_image(frame)
 
-    # Effettua la predizione
-    prediction = model.predict(processed_frame)
+        # Effettua la predizione
+        prediction = model.predict(processed_frame)
 
-    # Trova l'indice della classe con la probabilità massima
-    cv2.putText(frame, 'automobile: '+str(prediction[0][0]), (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-    cv2.putText(frame, 'gatto: '+str(prediction[0][1]), (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-    if np.max(prediction) > 0.65:
-        predicted_class = np.argmax(prediction)
+        # Trova l'indice della classe con la probabilità massima
+        cv2.putText(frame, 'automobile: '+str(prediction[0][0]), (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+        cv2.putText(frame, 'gatto: '+str(prediction[0][1]), (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+        if np.max(prediction) > 0.65:
+            predicted_class = np.argmax(prediction)
 
-        # Ottieni l'etichetta della classe
-        label = classi[predicted_class]
+            # Ottieni l'etichetta della classe
+            label = classi[predicted_class]
 
-        # Disegna il risultato sul frame
-        cv2.putText(frame, label, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-    print(np.argmax(prediction))
+            # Disegna il risultato sul frame
+            cv2.putText(frame, label, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+        print(np.argmax(prediction))
 
     # Visualizza il frame
     cv2.imshow('Webcam', frame)
