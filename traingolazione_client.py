@@ -27,14 +27,14 @@ def run():
         # ------------------------------
 
         # cameras variables
-        left_camera_source = 1
-        right_camera_source = 2
+        left_camera_source = 0
+        right_camera_source = 1
         pixel_width = 720
         pixel_height = 480
         angle_width = 60
         angle_height = 60  # 63
         frame_rate = 7
-        camera_separation = 12 + 7 / 10 #misura in pollici
+        camera_separation = 9 #misura in pollici
 
         # left camera 1
         ct1 = Camera_Thread()
@@ -206,8 +206,8 @@ def run():
             if x1k:
                 targeter1.frame_add_crosshairs(frame1, x1m, y1m, 48)
                 targeter2.frame_add_crosshairs(frame2, x2m, y2m, 48)
-                if D!=0:
-                    frame_transfer.in_frame(frame2,x2m,y2m,D)
+                #if D!=0:
+                   # frame_transfer.in_frame(frame2,x2m,y2m,D)
                 # display frame
             
             cv2.imshow("Left Camera 1", frame1)
@@ -301,9 +301,6 @@ def run():
 # ------------------------------
 
 class Camera_Thread:
-    # IMPORTANT: a queue is much more efficient than a deque
-    # the queue version runs at 35% of 1 processor
-    # the deque version ran at 108% of 1 processor
 
     # ------------------------------
     # User Instructions
@@ -333,8 +330,8 @@ class Camera_Thread:
 
     # camera setup
     camera_source = 0
-    camera_width = 640
-    camera_height = 480
+    camera_width = 720
+    camera_height = 600
     camera_frame_rate = 30
     camera_fourcc = cv2.VideoWriter_fourcc(*"MJPG")
 
