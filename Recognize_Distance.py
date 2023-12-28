@@ -73,7 +73,7 @@ while True:
 
     #calculate_distance()
 
-    status = impostazioni_ref.child('Status').get()
+    status = impostazioni_ref.child('StatusObjectReading').get()
     if status == 'ON' and D != 0:
         # Esegui l'inferenza
         frame1, old_label = inferenza_webcam(frame1, D, old_label)
