@@ -5,8 +5,8 @@ SeeBeyond è un progetto, sviluppato a fini educativi, che ha come obiettivo per
 </p>
 
 Il progetto SeeBeyond si compone di un backend e un frontend: \
-Repository Backend: https://github.com/Miki-Palmisano/SeeBeyond-AI \
-Repository Frontend: https://github.com/Miki-Palmisano/SeeBeyond
+Repository Backend: https://github.com/riccardosemeraro/SeeBeyond-AI \
+Repository Frontend: https://github.com/riccardosemeraro/SeeBeyond
 
 ## SeeBeyond AI
 
